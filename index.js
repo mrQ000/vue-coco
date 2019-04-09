@@ -269,19 +269,19 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 		// find begin of component definition (to inject "template" there)
 		let itpl = vue.script.findIndex(ln => /^\s*export\s+default\s*\{\s*$/.test(ln));	// export default {
 		if (itpl < 0) itpl = vue.script.findIndex(ln => /^\s*Vue\.component\s*\(.+\,\s*\{\s*$/.test(ln));	// Vue.component( 'xxx', {
-		if (itpl < 0) throwErr( 'VDC_SCRIPT_1', 'script requires line "export default {" or "Vue.component( 'xxx', {"');
+		if (itpl < 0) throwErr( 'VDC_SCRIPT_1', `script requires line "export default {" or "Vue.component( 'xxx', {"`);
+		itpl++;
 		
 		const stpl= vue.html.replace(/`/g,'\\\`');	// escape back-tick quotes
 
 		// generate and save output file (.mjs)
 		const out=[
-			`const st = document.createElement("style");`,
+			`const st = document.createElement("style");`,					// comp. style/css
 			`st.innerHTML = \`${vue.css.css}\`;`,
-			`document.getElementsByTagName("head")[0].appendChild(st);`,					
-			...vue.script.slice(0,Math.max(0,itpl)),
-			`Vue.component( '${compTag}', {`,
-			`\ttemplate:\`${stpl}\`,`,	// escape back-tick quotes
-			...vue.script.slice(itpl)
+			`document.getElementsByTagName("head")[0].appendChild(st);`,		
+			...vue.script.slice(0,Math.max(0,itpl)),						// comp. definition start/js
+			`\ttemplate:\`${stpl}\`,`,										// comp. template/html
+			...vue.script.slice(itpl)										// comp. definition tail/js
 		];		
 
 		fsx.outputFileSync( dstFilePath, out.join('\n'));
