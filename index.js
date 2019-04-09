@@ -1,15 +1,45 @@
 "use strict";
 
 /***********************************************************************************************************************
- * VDC - VUE DECOMPOSER
+ * VUE-COCO - COMPONENT COMPOSER for VUE
  ***********************************************************************************************************************
- * INSTALLATION
+ * lightweight converter for .vue into .mjs files
+ *		- transpiles pug and less
+ *		- wraps html and css into js code
+ *		- injects Vue.component(...) global installation code
+ *
+ * USAGE of OUTPUT (.mjs) files
+ *
+ *		JS code: globally install vue component just by importing it
+ *
+ *			import {} from "AbcXyz.mjs"
+ *
+ *		HTML (or PUG) code: use the component as any other one
+ *
+ *			<abc-xyz myprop="123">slot content</abc-xyz>
+ *
+ * INVOCATION																							*/
+ //		vue-coco help
+ //		vue-coco <filename>.vue ... immeditaley process a single .vue file			
+ //		vue-coco <path> --watch ... start watcher for "<path>/**/*.vue"
+ /*
+ * INSTALLATION as webstorm file watcher
+ *		Terminal > npm install -g vue-coco
+ *			Alternative: Settings > Languages & Frameworks > Node.js and NPM > Add Module > vue-coco
+ *		Settings > ??? add custom watcher
+ *
+ * INSTALLATION as webstorm tool (and run as project watcher)
  * 		??? settings / external tools
  * 		??? Settings/Preferences | Tools | Startup Tasks
  *
- * 	NPM building: 
- *  - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
- *	- blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
+ * 	XREFS
+ *		- NPM building - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
+ *		- NPM building - blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
+ *
+ *		- update/release to npm
+ *			npm login -> mrq7,...
+ *			npm version patch
+ *			npm publish
  **********************************************************************************************************************/
 
 

@@ -22,5 +22,9 @@
     "less": "^3.9.0",
     "path": "^0.12.7",
     "pug": "^2.0.3"
-  }
+  },
+  "bin": {
+    "vue-coco": "./index.js"
+  },
+  "preferGlobal": true  
 }
