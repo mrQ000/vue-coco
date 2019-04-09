@@ -1,0 +1,19 @@
+{
+  "name": "@mrq7/vue-cc",
+  "version": "1.0.0",
+  "description": "Lightweight component composer for Vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/mrQ000/vue-cc"
+  },
+  "keywords": [
+    "Vue",
+    "components"
+  ],
+  "author": "mrQ",
+  "license": "MIT"
+}
