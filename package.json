@@ -15,5 +15,12 @@
     "components"
   ],
   "author": "mrQ",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^2.1.5",
+    "fs-extra": "^7.0.1",
+    "less": "^3.9.0",
+    "path": "^0.12.7",
+    "pug": "^2.0.3"
+  }
 }
