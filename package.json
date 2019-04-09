@@ -1,5 +1,5 @@
 {
-  "name": "@mrq7/vue-cc",
+  "name": "vue-coco",
   "version": "1.0.0",
   "description": "Lightweight component composer for Vue",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/mrQ000/vue-cc"
+    "url": "github.com/mrQ000/vue-coco"
   },
   "keywords": [
     "Vue",
