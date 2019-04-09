@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 
 /***********************************************************************************************************************
@@ -51,18 +53,17 @@ const chokidar = require( NPM_GLOBAL_PATH + 'chokidar');
 const pug = require( NPM_GLOBAL_PATH + 'pug');
 const less = require( NPM_GLOBAL_PATH + 'less');
 
-console.__error= console.error;
-// console.error= function(...args) { console.log('*', ...args); };	// todo rem - use this to keep stdout/errout in timely sorted order
-
 // todo remove?
 const FN_LOG= './log.log';
+
+const target= process.argv[2] || '';
+const watchmode= process.argv[3] === '--watch';
+
 
 function log(msg){
 	const stamp= new Date();
 	fsx.appendFile( FN_LOG, stamp.toISOString()+'\t'+msg+'\n');
 }
-
-
 function throwErr( code, msg) {
 	const err= new Error( msg || code);
 	err.code= code;
@@ -80,6 +81,7 @@ function kebabCase( s){
 	}
 	return r;
 }
+
 /**
  * load output file, update/add/remove modified section, save back output file
  *
@@ -263,20 +265,24 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 		
 		// tune <script> section
 		trimEmptyLines( vue.script);
-		const j = vue.script.findIndex(ln => /^\s*export\s+default\s*\{\s*$/.test(ln));
-		if (j < 0) throwErr( 'VDC_SCRIPT_1', 'script requires line "export default {"');
+		
+		// find begin of component definition (to inject "template" there)
+		let itpl = vue.script.findIndex(ln => /^\s*export\s+default\s*\{\s*$/.test(ln));	// export default {
+		if (itpl < 0) itpl = vue.script.findIndex(ln => /^\s*Vue\.component\s*\(.+\,\s*\{\s*$/.test(ln));	// Vue.component( 'xxx', {
+		if (itpl < 0) throwErr( 'VDC_SCRIPT_1', 'script requires line "export default {" or "Vue.component( 'xxx', {"');
+		
+		const stpl= vue.html.replace(/`/g,'\\\`');	// escape back-tick quotes
 
 		// generate and save output file (.mjs)
 		const out=[
 			`const st = document.createElement("style");`,
 			`st.innerHTML = \`${vue.css.css}\`;`,
-			`document.getElementsByTagName("head")[0].appendChild(st);`,
-			...vue.script.slice(0,Math.max(0,j-1)),
+			`document.getElementsByTagName("head")[0].appendChild(st);`,					
+			...vue.script.slice(0,Math.max(0,itpl)),
 			`Vue.component( '${compTag}', {`,
-			`\ttemplate:\`${vue.html.replace(/`/g,'\\\`')}\`,`	// escape back-tick quotes
-		];
-		out.push( ...vue.script.slice(j+1));
-		out.push(');');
+			`\ttemplate:\`${stpl}\`,`,	// escape back-tick quotes
+			...vue.script.slice(itpl)
+		];		
 
 		fsx.outputFileSync( dstFilePath, out.join('\n'));
 	}
@@ -302,7 +308,9 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 
 		console.log( srcRelFilePath, remove ? '- remove  ' : '- add/updt', `... ${Date.now()-t0}ms`);
 
-		// process.exit(1); - only useful when called as watcher on indiviudal files which exits when done
+		// signal error condition 
+		// (when running as file-wacher only!)		
+		if (!watchmode) process.exit(1); 
 	}
 }
 
@@ -336,15 +344,12 @@ function startWatcher( workingDirRel){
 
 	const watcher= chokidar.watch( filter, {ignored: ignored});
 	watcher.on('ready', () => console.log( 'VDC ready'));
-	watcher.on('error', err => console.error( 'VDC_ERROR', err));
+	watcher.on('error', err => console.error( 'VDC_ERROR', err));	// global watcher - does NOT need process.exit(1)
 	watcher.on('add', path => addJob( path, false));
 	watcher.on('change', path => addJob( path, false));
 	watcher.on('unlink', path => addJob( path, true));
 }
 
-
-const target= process.argv[2] || '';
-const watchmode= process.argv[3] === '--watch';
 
 // help requested
 if (['','-h','h','-help','help'].includes( target)) {
