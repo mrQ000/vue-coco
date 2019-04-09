@@ -1,6 +1,6 @@
 {
   "name": "vue-coco",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Lightweight component composer for Vue",
   "main": "index.js",
   "scripts": {
@@ -26,5 +26,5 @@
   "bin": {
     "vue-coco": "./index.js"
   },
-  "preferGlobal": true  
+  "preferGlobal": true
 }
