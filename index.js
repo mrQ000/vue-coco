@@ -7,7 +7,9 @@
  * 		??? settings / external tools
  * 		??? Settings/Preferences | Tools | Startup Tasks
  *
- * 	NPM building: blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
+ * 	NPM building: 
+ *  - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
+ *	- blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
  **********************************************************************************************************************/
 
 
@@ -217,7 +219,7 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 		// tune <template> section
 		trimEmptyLines( vue.template);
 		vue.html= pug.render( vue.template.join('\n'), {
-			filename:vue.dir+'/_.pug',	// rqd for cache:true
+			filename:`${vue.dir}/${vue.name}.pug`,	// rqd for cache:true
 			// cache: true
 		});
 
@@ -228,7 +230,7 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 			// sourceMap: { sourceMapFileInline: true }
 			filename: `${vue.dir}/${vue.name}.less`
 		});
-
+		
 		// tune <script> section
 		trimEmptyLines( vue.script);
 		const j = vue.script.findIndex(ln => /^\s*export\s+default\s*\{\s*$/.test(ln));
@@ -293,7 +295,7 @@ function addJob( path, remove) {
 	}
 }
 
-function exec( workingDirRel){
+function startWatcher( workingDirRel){
 
 	// note: __dirname is the executeable's location (and therefore not useful here)
 	workingDir= path.resolve( workingDirRel).replace(/\\/g,'/'); // chokidar supports '/' only (and not '\')
@@ -310,4 +312,26 @@ function exec( workingDirRel){
 	watcher.on('unlink', path => addJob( path, true));
 }
 
-exec( process.argv[2] || './');
+
+const target= process.argv[2] || '';
+const watchmode= process.argv[3] === '--watch';
+
+// help requested
+if (['','-h','h','-help','help'].includes( target)) {
+	console.log('vue-coco <filename>.vue ... process single file immediately');
+	console.log('vue-coco <path> --watch ... install watcher for "<path>/**/*.vue"');
+}
+
+// install watcher for given path
+else if (watchmode) {
+	startWatcher( target || './');
+}
+
+// process a single file immediately
+else {
+	const srcFilePath= path.resolve( target);
+	const srcFile= path.parse( srcFilePath);	
+	
+	console.log( `composing Vue component "${srcFilePath}"`);
+	processVueFile( srcFile.dir, srcFilePath, false);
+}
