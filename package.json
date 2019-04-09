@@ -1,6 +1,6 @@
 {
   "name": "vue-coco",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Lightweight component composer for Vue",
   "main": "index.js",
   "scripts": {
