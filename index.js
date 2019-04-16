@@ -25,14 +25,10 @@
  //		vue-coco <filename>.vue ... immeditaley process a single .vue file			
  //		vue-coco <path> --watch ... start watcher for "<path>/**/*.vue"
  /*
- * INSTALLATION as webstorm file watcher
- *		Terminal > npm install -g vue-coco
- *			Alternative: Settings > Languages & Frameworks > Node.js and NPM > Add Module > vue-coco
- *		Settings > ??? add custom watcher
- *
- * INSTALLATION as webstorm tool (and run as project watcher)
- * 		??? settings / external tools
- * 		??? Settings/Preferences | Tools | Startup Tasks
+ * INSTALLATION in webstorm
+ *		Terminal window > npm install -g vue-coco
+ *		Settings > add custom watcher
+ *		Project tree > context menu > File nesting... > Add > .vue | .mjs
  *
  * 	XREFS
  *		- NPM building - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
