@@ -87,5 +87,8 @@ vue-coco <path> --watch
 ```
 
 ## INSTALLATION AS WEBSTORM WATCHER
+1. Installation: Terminal window > npm install -g vue-coco
 1. Install watcher: File > Settings > Tools > File Watchers > Custom Watcher
-2. Hide output (.mjs) files: Project tree > context menu > File nesting... > Add > .vue | .mjs
+1. Hide output (.mjs) files: Project tree > context menu > File nesting... > Add > .vue | .mjs
+
+ 
