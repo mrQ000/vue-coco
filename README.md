@@ -12,19 +12,67 @@ lightweight converter for .vue into .mjs files
 npm install -g vue-coco
 ```
 
-# USAGE of OUTPUT (.mjs) files
+# SOURCE (.vue) files
 
-Javascript: globally install vue component just by importing it
-```javascript
-import {} from "AbcXyz.mjs"
+```vue
+<template lang="pug">
+  // wrap the component into a root div with unique class
+  .abc-xyz 
+    h1 {{value}}
+    small
+      slot
+</template>
+
+<script>
+  import OtherComp from "...";
+  
+  export default {
+    name: "AbcXyz",
+    components: {     // register sub-components
+      OtherComp
+    },    
+    props:{ 
+      value:String
+    }
+  }
+</script>
+
+<style lang="less">
+  @import "globals.less"; // resolve any global less constants/macros
+  
+  .abc-xyz {              // wrap style definitions into unique class (same as used with html code)
+    h1 {
+      color: steelblue;  
+    }
+  }
+</style>
 ```
 
-HTML (or PUG): use the component as any other one 
-```html
-<abc-xyz myprop="123">slot content</abc-xyz>
+# USAGE of OUTPUT (.mjs) files
+
+Javascript: import and install your component
+```javascript
+import AbcXyz from "AbcXyz.mjs"
+
+// either register component globally..
+Vue.component( 'abc-xyz', AbcXyz);
+
+// ..or just inside a certain Vue component
+new Vue({
+  ...
+  components:{ AbcXyz},
+  ...
+})
+```
+
+Use the component in your PUG/HTML code the same way as any other one:
+```pug
+  abc-xyz(value="My Header") Some description text as slot content
 ```
 
 # INVOCATION
+
+## AS COMMAND LINE TOOL
 Show help
 ```bash
 vue-coco help
@@ -38,6 +86,6 @@ Start watcher for "<path>/**/*.vue"
 vue-coco <path> --watch
 ```
 
-# Installation in webstorm
-1. File > Settings > Tools > File Watchers > Custom Watcher
-1. Project tree > context menu > File nesting... > Add > .vue | .mjs
+## INSTALLATION AS WEBSTORM WATCHER
+1. Install watcher: File > Settings > Tools > File Watchers > Custom Watcher
+2. Hide output (.mjs) files: Project tree > context menu > File nesting... > Add > .vue | .mjs
