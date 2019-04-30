@@ -42,12 +42,11 @@
 
 
 // typ. 'C:\\Users\\AAI\\AppData\\Roaming\\npm\\node_modules\\';	// win> set NODE_PATH=%AppData%\npm\node_modules\
-const NPM_GLOBAL_PATH = require('child_process').execSync('npm root -g').toString().trim() + '/';
 const path = require( 'path');
 const fsx = require( 'fs-extra');
-const chokidar = require( NPM_GLOBAL_PATH + 'chokidar');
-const pug = require( NPM_GLOBAL_PATH + 'pug');
-const less = require( NPM_GLOBAL_PATH + 'less');
+const chokidar = require( 'chokidar');
+const pug = require( 'pug');
+const less = require( 'less');
 
 // todo remove?
 const FN_LOG= './log.log';
