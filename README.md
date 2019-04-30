@@ -12,6 +12,8 @@ npm install -g vue-coco
 
 # SOURCE (.vue) files
 
+Template to start with:
+
 ```vue
 <template lang="pug">
   // wrap the component into a root div with unique class
