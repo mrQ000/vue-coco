@@ -4,6 +4,8 @@ Lightweight converter for .vue into .mjs files
 - wraps HTML and CSS into single JS file
 - transpiles PUG and LESS
 
+Generated output is a single .mjs file with path and name identical to the source (.vue) file.
+
 # Installation
 
 ```bash
