@@ -1,10 +1,8 @@
 # VUE-COCO - COMPONENT COMPOSER for VUE
 
-Lightweight component composer for Vue
-lightweight converter for .vue into .mjs files
-- transpiles pug and less
-- wraps html and css into js code
-- injects Vue.component(...) global installation code
+Lightweight converter for .vue into .mjs files
+- wraps HTML and CSS into single JS file
+- transpiles PUG and LESS
 
 # Installation
 
