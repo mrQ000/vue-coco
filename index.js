@@ -5,39 +5,16 @@
 /***********************************************************************************************************************
  * VUE-COCO - COMPONENT COMPOSER for VUE
  ***********************************************************************************************************************
- * lightweight converter for .vue into .mjs files
- *		- transpiles pug and less
- *		- wraps html and css into js code
- *		- injects Vue.component(...) global installation code
+ * -> see github repo readme.md for description
+ * XREFS
+ *	- NPM building - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
+ *	- NPM building - blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
  *
- * USAGE of OUTPUT (.mjs) files
- *
- *		JS code: globally install vue component just by importing it
- *
- *			import {} from "AbcXyz.mjs"
- *
- *		HTML (or PUG) code: use the component as any other one
- *
- *			<abc-xyz myprop="123">slot content</abc-xyz>
- *
- * INVOCATION																							*/
- //		vue-coco help
- //		vue-coco <filename>.vue ... immeditaley process a single .vue file			
- //		vue-coco <path> --watch ... start watcher for "<path>/**/*.vue"
- /*
- * INSTALLATION in webstorm
- *		Terminal window > npm install -g vue-coco
- *		Settings > add custom watcher
- *		Project tree > context menu > File nesting... > Add > .vue | .mjs
- *
- * 	XREFS
- *		- NPM building - medium.freecodecamp.org/how-to-create-and-publish-your-npm-package-node-module-in-just-10-minutes-b8ca3a100050
- *		- NPM building - blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm
- *
- *		- update/release to npm
- *			npm login -> mrq7,...
- *			npm version patch
- *			npm publish
+ * RELEASE TO NPM
+ *      move to project source directory
+ *	npm login -> mrq7,...
+ *	npm version patch
+ *	npm publish
  **********************************************************************************************************************/
 
 
