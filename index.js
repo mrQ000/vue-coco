@@ -174,9 +174,10 @@ function loadVueFile( srcFilePath) {
 			if (sect!=='template') warnings.push(`${iln} - found "</template>" inside <${sect}>`);
 			sect= 'none';
 		}
-		else if (ln1.match(/^<style\s+lang="less">$/)) {
+		else if (ln1.match(/^<style\s+lang="less">$/) || ln1.match(/^<style\s+lang="less" scoped>$/)) {
 			if (sect!=='none') warnings.push(`${iln} - found "<style>" inside <${sect}>`);
 			sect= 'style';
+			vue['style_scoped'] = !!ln1.includes('scoped');
 		}
 		else if (ln1==='</style>') {
 			if (sect!=='style') warnings.push(`${iln} - found "</style>" inside <${sect}>`);
@@ -220,13 +221,46 @@ async function processVueFile( workingDir, srcFilePath, remove) {
 		const compTpl = '#qvc-' + compTag;			// component's template selector
 		const compWrp = 'div.qvc-' + compTag;		// component's wrapper selector
 
+		//scope the css main class if requested
+		if(vue.style_scoped) {
+			const scopeId = `coco-v-${Math.random().toString(36).substring(7)}`;
+			//find the main css classname and scope it
+			for (let idx in vue.style) {
+				const ln = vue.style[idx];
+				const css = ln.split(/(\s*)[.](.*?)(\s*)[{]/);
+				if (css.length > 1) {
+					const mainClass = css[2];
+					const scopedClass = `${mainClass}[${scopeId}]`;
+					vue.style[idx] = ln.replace(mainClass, scopedClass);
+					//replace main css in pug code to.
+					for (let pugIdx in vue.template) {
+						const pugLn = vue.template[pugIdx];
+						if (pugLn.includes(`.${mainClass}`)) {
+							const hasopts = pugLn.lastIndexOf(')');
+							//extend the options with the scope
+							if (hasopts >= 0) {
+								vue.template[pugIdx] = pugLn.substring(0, hasopts) + ` ${scopeId} ` + pugLn.substring(hasopts);
+							} else {
+								const pug = pugLn.match(/(\s*)[.](.*?)(\s*)[\s]/);
+								const toReplace = pug ? pug[2] : `.${mainClass}`;
+								//add options to the element
+								if (pug || pugLn === `.${mainClass}`)
+									vue.template[pugIdx] = pugLn.replace(toReplace, `${toReplace}(${scopeId})`);
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+
 		// tune <template> section
 		trimEmptyLines( vue.template);
 		vue.html= pug.render( vue.template.join('\n'), {
 			filename:`${vue.dir}/${vue.name}.pug`,	// rqd for cache:true
 			// cache: true
 		});
-
 
 		// tune <style> section
 		trimEmptyLines( vue.style);
