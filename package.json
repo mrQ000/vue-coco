@@ -17,11 +17,11 @@
   "author": "mrQ",
   "license": "MIT",
   "dependencies": {
-    "chokidar": "^2.1.5",
+    "chokidar": "^3.5.2",
     "fs-extra": "^7.0.1",
     "less": "^3.9.0",
     "path": "^0.12.7",
-    "pug": "^2.0.3"
+    "pug": "^3.0.2"
   },
   "bin": {
     "vue-coco": "./index.js"

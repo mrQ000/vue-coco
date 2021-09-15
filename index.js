@@ -376,3 +376,7 @@ else {
 	console.log( `composing Vue component "${srcFilePath}"`);
 	processVueFile( srcFile.dir, srcFilePath, false);
 }
+
+module.exports = {
+	processVueFile
+}
